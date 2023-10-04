@@ -1,9 +1,20 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.argox.deeplink_cookbook",
-    "sha256_cert_fingerprints":
-    ["6C:7F:51:AD:83:3D:97:9D:00:90:79:AC:A3:11:BE:54:A3:D8:14:16:1E:CF:22:D1:EA:FB:B1:66:F3:5A:DB:D5"]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.argox.deeplink_cookbook2",
+      "sha256_cert_fingerprints":
+      ["6C:7F:51:AD:83:3D:97:9D:00:90:79:AC:A3:11:BE:54:A3:D8:14:16:1E:CF:22:D1:EA:FB:B1:66:F3:5A:DB:D5"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.argox.deeplink_cookbook",
+      "sha256_cert_fingerprints":
+      ["6C:7F:51:AD:83:3D:97:9D:00:90:79:AC:A3:11:BE:54:A3:D8:14:16:1E:CF:22:D1:EA:FB:B1:66:F3:5A:DB:D5"]
+    }
   }
-}]
+]
