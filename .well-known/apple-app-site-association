@@ -3,17 +3,25 @@
       "apps": [],
       "details": [
       {
-        "appID": "H5P32ZLBZ3.com.argox.deeplinkCookbook",
-        "paths": ["/details","/download", "/member/news/*", "/store/*"],
-        "components": [
-
+          "appID": "H5P32ZLBZ3.com.argox.ilabelprint-plus",
+          "paths": ["/ilabelprint/print*"],
+          "components": [
+                  {
+                    "/": "/ilabelprint/print*",
+                    "comment": "Matches any URL whose path starts with /ilabelprint/print"
+                  },
+          ]
+       },
+      {
+          "appID": "H5P32ZLBZ3.com.argox.deeplinkCookbook",
+          "paths": ["/details","/download", "/member/news/*", "/store/*"],
+          "components": [
                 {
                   "/": "/details*",
                   "comment": "Matches any URL whose path starts with /details"
                 },
-
-              ]
-      }
+          ]
+       }
     ]
   }
 }
