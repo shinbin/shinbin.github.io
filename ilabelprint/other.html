@@ -2,16 +2,19 @@
 <html>
 <head>
     <title>Other Link</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="apple-itunes-app" content="app-id=6463697132, app-argument=https://shinbin.github.io/ilabelprint/print.html?q=123">
+<!--        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
+<!--        <meta name="apple-itunes-app" content="app-id=6463697132, app-argument=https://shinbin.github.io/ilabelprint/print.html?q=123">-->
     <!--    -->
-        <meta property="al:ios:url" content="ilabel2://shinbin.github.io/ilabelprint/print" />
-        <meta property="al:ios:app_store_id" content="6463697132" />
-        <meta property="al:ios:app_name" content="iLabelPrint+" />
+    <meta property="al:android:url" content="ilabel2://shinbin.github.io/ilabelprint/print?qq=12&cc=123">
+    <meta property="al:android:package" content="com.argox.ilabel_print2">
+    <meta property="al:android:app_name" content="ilabel2">
 
-        <meta property="al:android:url" content="ilabel2://shinbin.github.io/ilabelprint/print">
-        <meta property="al:android:package" content="com.argox.ilabel_print2">
-        <meta property="al:android:app_name" content="ilabel2">
+    <meta property="al:ios:url" content="ilabel2://shinbin.github.io/ilabelprint/print?qq=12&cc=123" />
+    <meta property="al:ios:app_store_id" content="6463697132" />
+    <meta property="al:ios:app_name" content="iLabelPrint+" />
+
+    <meta property="al:web:should_fallback" content="true" />
+
 
     <meta property="og:title" content="iLabelPrint+ title" />
     <meta property="og:type" content="website" />
@@ -24,3 +27,20 @@
 
 </body>
 </html>
+
+<!--&lt;!&ndash; Android: 商品 123 的 URL Scheme &ndash;&gt;-->
+<!--<meta property="al:android:url" content="partnerapp://product/123">-->
+<!--&lt;!&ndash; Android Package Name，這可以讓使用者在未安裝的時候連結至安裝連結 &ndash;&gt;-->
+<!--<meta property="al:android:package" content="partner.ecapp">-->
+<!--&lt;!&ndash; Android: App 名稱，這會出現在使用者未安裝 App，叫你去下載某某 App 的那個文案 &ndash;&gt;-->
+<!--<meta property="al:android:app_name" content="Partner Studio">-->
+
+<!--&lt;!&ndash; iOS: 商品 123 的 URL Scheme &ndash;&gt;-->
+<!--<meta property="al:ios:url" content="partnerapp://product/123" />-->
+<!--&lt;!&ndash; iOS: App Store ID，這可以讓使用者在未安裝的時候連結至安裝連結 &ndash;&gt;-->
+<!--<meta property="al:ios:app_store_id" content="123456789" />-->
+<!--&lt;!&ndash; iOS: App 名稱，這會出現在使用者未安裝 App，叫你去下載某某 App 的那個文案 &ndash;&gt;-->
+<!--<meta property="al:ios:app_name" content="Partner Studio" />-->
+
+<!--&lt;!&ndash; 要在使用者未安裝 App 的時候自動 fallback 帶使用者到網頁版嗎？預設是 true，若設為 false，則 Facebook 會問使用者是否要下載該 App，或是直接去網頁 &ndash;&gt;-->
+<!--<meta property="al:web:should_fallback" content="false" />-->
