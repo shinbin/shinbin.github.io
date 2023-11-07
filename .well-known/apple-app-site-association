@@ -4,15 +4,11 @@
       "details": [
       {
           "appID": "H5P32ZLBZ3.com.argox.ilabelprint-plus",
-          "paths": ["/ilabelprint/print","/ilabelprint/print.html"],
+          "paths": ["/ilabelprint/print"],
           "components": [
                   {
                     "/": "/ilabelprint/print",
                     "comment": "Matches any URL whose path starts with /ilabelprint/print"
-                  },
-                  {
-                    "/": "/ilabelprint/print.html",
-                    "comment": "Matches any URL whose path starts with /ilabelprint/print.html"
                   },
           ]
        },
