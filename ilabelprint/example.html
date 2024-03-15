@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Label Print</title>
+</head>
+<body>
+
+<form id="labelForm">
+    <label for="numberInput">編號：</label>
+    <input type="text" id="numberInput" name="no">
+    <br>
+    <label for="amountInput">金額：</label>
+    <input type="text" id="amountInput" name="Amount">
+    <br>
+    <button type="button" onclick="printLabel()">列印標籤</button>
+</form>
+
+<script>
+function printLabel() {
+    var number = document.getElementById("numberInput").value;
+    var amount = document.getElementById("amountInput").value;
+
+    // 檢查是否有輸入值
+    if (number && amount) {
+        // 建立帶有參數的網址
+        var url = "https://shinbin.github.io/ilabelprint/print?no=" + encodeURIComponent(number) + "&Amount=" + encodeURIComponent(amount);
+        // 打開新視窗導向至指定網址
+        window.open(url);
+    } else {
+        alert("請輸入編號和金額。");
+    }
+}
+</script>
+
+</body>
+</html>
