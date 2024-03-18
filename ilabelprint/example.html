@@ -11,9 +11,9 @@
 
 <form id="inputForm">
     <label for="bcNum">Number (長度限制為 12):</label><br>
-    <input type="text" id="bcNum" name="bcNum" maxlength="12" pattern="\d{12}" title="請輸入12位數字"><br>
+    <input type="number" id="bcNum" name="bcNum" maxlength="12" pattern="\d{12}" title="請輸入12位數字" min="0" max="999999999999"><br>
     <label for="txtAmount">Amount (長度限制為 4):</label><br>
-    <input type="text" id="txtAmount" name="txtAmount" maxlength="4" pattern="\d{1,4}" title="請輸入最多4位數字"><br><br>
+    <input type="number" id="txtAmount" name="txtAmount" maxlength="4" pattern="\d{1,4}" title="請輸入最多4位數字" min="0" max="9999"><br><br>
     <input type="button" value="產生 JSON" onclick="generateJSON()">
 </form>
 
@@ -45,7 +45,6 @@ function generateJSON() {
 
 </body>
 </html>
-
 
 
 
