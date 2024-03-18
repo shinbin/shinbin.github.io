@@ -11,7 +11,7 @@
 
 <form id="inputForm">
     <label for="bcNum">Number (長度限制為 12):</label><br>
-    <input type="number" id="bcNum" name="bcNum" maxlength="12" pattern="\d{12}" title="請輸入12位數字" min="0" max="999999999999"><br>
+    <input id="bcNum" name="bcNum" maxlength="12" pattern="\d{12}" min="0" max="999999999999"><br>
     <label for="txtAmount">Amount (長度限制為 4):</label><br>
     <input type="number" id="txtAmount" name="txtAmount" maxlength="4" pattern="\d{1,4}" title="請輸入最多4位數字" min="0" max="9999"><br><br>
     <input type="button" value="產生 JSON" onclick="generateJSON()">
@@ -21,8 +21,19 @@
 
 <script>
 function generateJSON() {
-  var bcNum = document.getElementById("bcNum").value;
-  var txtAmount = document.getElementById("txtAmount").value;
+<!--  var bcNum = document.getElementById("bcNum").value;-->
+<!--  var txtAmount = document.getElementById("txtAmount").value;-->
+document.getElementById("bcNum").addEventListener("input", function() {
+  if (this.value.length > 12) {
+    this.value = this.value.slice(0, 12);
+  }
+});
+
+document.getElementById("txtAmount").addEventListener("input", function() {
+  if (this.value.length > 4) {
+    this.value = this.value.slice(0, 4);
+  }
+});
 
   var jsonData = {
     "labelSrc": "https://shinbin.github.io/labels/link_example.json",
