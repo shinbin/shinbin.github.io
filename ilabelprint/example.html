@@ -3,38 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>產生 JSON</title>
+    <title>App Links Print Label Example</title>
+    <style>
+      .container {
+          text-align: center;
+          margin: 0 auto;
+      }
+
+      form {
+          display: inline-block;
+          text-align: left;
+      }
+
+      .errorMessage {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      input[type="button"] {
+          font-size: 20px;
+      }
+    </style>
 </head>
 <body>
 
-<h2>請輸入 Number 和 Amount</h2>
 
-<form id="inputForm">
-    <label for="bcNum">Number (長度限制為 12):</label><br>
-    <input id="bcNum" name="bcNum" maxlength="12" pattern="\d{12}" min="0" max="999999999999"><br>
-    <label for="txtAmount">Amount (長度限制為 4):</label><br>
-    <input type="number" id="txtAmount" name="txtAmount" maxlength="4" pattern="\d{1,4}" title="請輸入最多4位數字" min="0" max="9999"><br><br>
-    <input type="button" value="產生 JSON" onclick="generateJSON()">
-</form>
-
-<div id="jsonOutput"></div>
+<div class="container">
+    <form id="inputForm" >
+        <h2>App Links Print Label Example</h2>
+        <h5>Please input 'Product Number' and 'Amount' :</h5>
+        <label for="bcNum">Product Number (up to 12 alphanumeric characters)</label><br>
+        <input type="text" id="bcNum" name="bcNum" maxlength="12"><br>
+        <div id="bcNumError" class="errorMessage"></div><br>
+        <label for="txtAmount">Amount (up to 4 numeric characters):</label><br>
+        <input type="text" id="txtAmount" name="txtAmount" maxlength="4"><br>
+        <div id="txtAmountError" class="errorMessage"></div><br>
+        <input type="button" value=" Print " onclick="print()">
+        <p></p>
+        <span style="color: blue;">Tip: Only works on mobile devices with 'iLabelPrint+' App installed!</span>
+    </form>
+    <!--<div id="jsonOutput"></div>-->
+</div>
 
 <script>
-function generateJSON() {
-<!--  var bcNum = document.getElementById("bcNum").value;-->
-<!--  var txtAmount = document.getElementById("txtAmount").value;-->
 document.getElementById("bcNum").addEventListener("input", function() {
   if (this.value.length > 12) {
     this.value = this.value.slice(0, 12);
   }
+  document.getElementById("bcNumError").textContent = "";
 });
 
 document.getElementById("txtAmount").addEventListener("input", function() {
   if (this.value.length > 4) {
     this.value = this.value.slice(0, 4);
   }
+  document.getElementById("txtAmountError").textContent = "";
 });
 
+function base64URLEncode(str) {
+  var base64Encoded = btoa(str);
+  return base64Encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+
+function validateInput() {
+  var bcNum = document.getElementById("bcNum").value.trim();
+  var txtAmount = document.getElementById("txtAmount").value.trim();
+  var bcNumError = document.getElementById("bcNumError");
+  var txtAmountError = document.getElementById("txtAmountError");
+  var bcNumPattern = /^[0-9a-zA-Z]*$/;
+  var txtAmountPattern = /^[0-9]*$/;
+
+  if (bcNum === "" || !bcNumPattern.test(bcNum)) {
+    bcNumError.textContent = "Invalid Value!";
+    document.getElementById("bcNum").focus();
+    return false;
+  }
+
+  if (txtAmount === "" || !txtAmountPattern.test(txtAmount)) {
+    txtAmountError.textContent = "Invalid Value!";
+    document.getElementById("txtAmount").focus();
+    return false;
+  }
+
+  return true;
+}
+
+function print() {
+  if (!validateInput()) {
+    return;
+  }
+
+  var bcNum = document.getElementById("bcNum").value.trim();
+  var txtAmount = document.getElementById("txtAmount").value.trim();
   var jsonData = {
     "labelSrc": "https://shinbin.github.io/labels/link_example.json",
     "cloudLabelVer": 1,
@@ -50,16 +111,18 @@ document.getElementById("txtAmount").addEventListener("input", function() {
   };
 
   var jsonString = JSON.stringify(jsonData);
-  document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>";
+  var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
+
+<!--  document.getElementById("jsonOutput").innerHTML = "<pre>" + base64URL + "</pre>";-->
+
+  var url = "https://shinbin.github.io/ilabelprint/print?data=" + base64URL;
+  window.open(url);
+
 }
 </script>
 
 </body>
 </html>
-
-
-
-
 
 
 
