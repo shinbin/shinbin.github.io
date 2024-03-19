@@ -118,7 +118,7 @@ function printLabel() {
 
   var jsonString = JSON.stringify(jsonData);
   var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
-  var url = "https://shinbin.github.io/ilabelprint/print?data=" + base64URL;
+  var url = "https://shinbin.github.io/ilabelprint/print?data=" + base64URL+"&debug=on";
 
 <!--  document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";-->
   window.open(url);
