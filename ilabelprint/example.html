@@ -30,8 +30,10 @@
 
 
 <div class="container">
+
     <form id="inputForm" >
-        <h2>App Links Print Label Example</h2>
+        <h3>App Links Print Label Example</h3>
+        <span style="color: blue;">Tip: Only works on mobile devices with 'iLabelPrint+' App installed!</span>
         <h5>Please input 'Product Number' and 'Amount' :</h5>
         <label for="bcNum">Product Number (up to 12 alphanumeric characters)</label><br>
         <input type="text" id="bcNum" name="bcNum" maxlength="12"><br>
@@ -39,9 +41,13 @@
         <label for="txtAmount">Amount (up to 4 numeric characters):</label><br>
         <input type="text" id="txtAmount" name="txtAmount" maxlength="4"><br>
         <div id="txtAmountError" class="errorMessage"></div><br>
+
+        <input type="checkbox" id="debugCheckbox">
+        <label for="debugCheckbox">Debug Mode</label><br>
+        <p></p>
         <input type="button" value=" Print " onclick=printLabel()>
         <p></p>
-        <span style="color: blue;">Tip: Only works on mobile devices with 'iLabelPrint+' App installed!</span>
+
     </form>
     <div id="jsonOutput"></div>
     <div id="linkOutput"></div>
@@ -62,47 +68,14 @@ document.getElementById("txtAmount").addEventListener("input", function() {
   document.getElementById("txtAmountError").textContent = "";
 });
 
-function base64URLEncode(str) {
-    // 将字符串转换为 UTF-8 编码的字节序列
-    let bytes = new TextEncoder().encode(str);
-
-    // 使用标准 Base64 编码
-    let base64 = btoa(String.fromCharCode.apply(null, bytes));
-
-    // 将 Base64 编码中的 URL 非安全字符进行替换
-    let urlSafeBase64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-
-    // 检查结果长度是否是 4 的倍数，如果不是，手动添加适当数量的填充字符
-    let padding = urlSafeBase64.length % 4;
-    if (padding !== 0) {
-        urlSafeBase64 += '='.repeat(4 - padding);
-    }
-
-    return urlSafeBase64;
-
-
-
-<!--    // Encode the text content to UTF-8-->
-<!--    var utf8Bytes = new TextEncoder().encode(text);-->
-<!--    // Use the built-in btoa() function for Base64 encoding-->
-<!--&lt;!&ndash;    var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(utf8Bytes)));&ndash;&gt;-->
-<!--    const base64String = btoa(String.fromCharCode(...utf8Bytes));-->
-<!--    // Adjust the encoding result to meet the requirements of Base64 URL format-->
-<!--    var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');-->
-<!--    return base64Url;-->
-
-
-<!--    // 將文字內容以 UTF-8 位元方式編碼-->
-<!--  const bytes = new TextEncoder().encode(str);-->
-
-<!--  // 將 UTF-8 位元組陣列轉為 Base64 字串-->
-<!--  const base64 = btoa(String.fromCharCode(...bytes));-->
-
-<!--  // 將 Base64 字串轉為 "Base64 URL" 編碼-->
-<!--  const base64Url = base64-->
-<!--    .replace(/\+/g, '-')-->
-<!--    .replace(/\//g, '_')-->
-<!--    .replace(/=+$/, '');-->
+function base64URLEncode(text) {
+    // Encode the text content to UTF-8
+    var utf8Bytes = new TextEncoder().encode(text);
+    // Use the built-in btoa() function for Base64 encoding
+    const base64String = btoa(String.fromCharCode(...utf8Bytes));
+    // Adjust the encoding result to meet the requirements of Base64 URL format
+    var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return base64Url;
 }
 
 function validateInput() {
@@ -135,6 +108,8 @@ function printLabel() {
 
   var bcNum = document.getElementById("bcNum").value.trim().toString();
   var txtAmount = document.getElementById("txtAmount").value.trim().toString();
+  var debugMode = document.getElementById("debugCheckbox").checked;
+
   var jsonData = {
     "labelSrc": "https://shinbin.github.io/labels/link_example.json",
     "cloudLabelVer": 1,
@@ -151,8 +126,11 @@ function printLabel() {
 
   var jsonString = JSON.stringify(jsonData);
   var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
-  var url = "https://shinbin.github.io/ilabelprint/print?data=" + base64URL+"&debug=on";
+  var url = "https://shinbin.github.io/ilabelprint/print?data=" + base64URL;
 
+  if (debugMode) {
+    url += "&debug=on";
+  }
 
 <!--  document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>";-->
 <!--  document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";-->
