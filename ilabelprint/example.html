@@ -43,6 +43,7 @@
         <p></p>
         <span style="color: blue;">Tip: Only works on mobile devices with 'iLabelPrint+' App installed!</span>
     </form>
+    <div id="jsonOutput"></div>
     <div id="linkOutput"></div>
 </div>
 
@@ -61,15 +62,34 @@ document.getElementById("txtAmount").addEventListener("input", function() {
   document.getElementById("txtAmountError").textContent = "";
 });
 
-function base64URLEncode(text) {
-    // Encode the text content to UTF-8
-    var utf8Bytes = new TextEncoder().encode(text);
-    // Use the built-in btoa() function for Base64 encoding
-<!--    var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(utf8Bytes)));-->
-    const base64String = btoa(String.fromCharCode(...utf8Bytes));
-    // Adjust the encoding result to meet the requirements of Base64 URL format
-    var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    return base64Url;
+function base64URLEncode(str) {
+    // 将字符串转换为 UTF-8 编码的字节序列
+    let bytes = new TextEncoder().encode(str);
+
+    // 使用标准 Base64 编码
+    let base64 = btoa(String.fromCharCode.apply(null, bytes));
+
+    // 将 Base64 编码中的 URL 非安全字符进行替换
+    let urlSafeBase64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+
+    // 检查结果长度是否是 4 的倍数，如果不是，手动添加适当数量的填充字符
+    let padding = urlSafeBase64.length % 4;
+    if (padding !== 0) {
+        urlSafeBase64 += '='.repeat(4 - padding);
+    }
+
+    return urlSafeBase64;
+
+
+
+<!--    // Encode the text content to UTF-8-->
+<!--    var utf8Bytes = new TextEncoder().encode(text);-->
+<!--    // Use the built-in btoa() function for Base64 encoding-->
+<!--&lt;!&ndash;    var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(utf8Bytes)));&ndash;&gt;-->
+<!--    const base64String = btoa(String.fromCharCode(...utf8Bytes));-->
+<!--    // Adjust the encoding result to meet the requirements of Base64 URL format-->
+<!--    var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');-->
+<!--    return base64Url;-->
 
 
 <!--    // 將文字內容以 UTF-8 位元方式編碼-->
@@ -133,6 +153,8 @@ function printLabel() {
   var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
   var url = "https://shinbin.github.io/ilabelprint/print?data=" + base64URL+"&debug=on";
 
+
+<!--  document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>";-->
 <!--  document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";-->
   window.open(url);
 }
