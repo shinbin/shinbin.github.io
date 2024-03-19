@@ -65,8 +65,7 @@ function base64URLEncode(text) {
     // Encode the text content to UTF-8
     var utf8Bytes = new TextEncoder().encode(text);
     // Use the built-in btoa() function for Base64 encoding
-    var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(utf8Bytes)));
-<!--    const base64String = btoa(String.fromCharCode(...utf8Bytes));-->
+    const base64String = btoa(String.fromCharCode(...utf8Bytes));
     // Adjust the encoding result to meet the requirements of Base64 URL format
     var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     return base64Url;
@@ -120,7 +119,7 @@ function printLabel() {
   var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
   var url = "https://shinbin.github.io/ilabelprint/print?data=" + base64URL;
 
-<!--  document.getElementById("linkOutput").innerHTML = "<pre>" + base64URL + "</pre>";-->
+<!--  document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";-->
   window.open(url);
 }
 </script>
