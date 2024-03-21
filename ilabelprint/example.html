@@ -24,6 +24,14 @@
       input[type="button"] {
           font-size: 20px;
       }
+      .control-group {
+        text-align: left;
+        margin:  auto;
+        border: 1px solid gray;
+        padding: 10px;
+        margin-top: 40px;
+        margin-bottom: 10px;
+      }
     </style>
 </head>
 <body>
@@ -32,27 +40,39 @@
 <div class="container">
 
     <form id="inputForm" >
-        <h3>App Links Print Label Example</h3>
-        <span style="color: blue;">Tip: Only works on mobile devices with 'iLabelPrint+' App installed!</span>
-        <h5>Please input 'Product Number' and 'Amount' :</h5>
-        <label for="bcNum">Product Number (up to 12 alphanumeric characters)</label><br>
-        <input type="text" id="bcNum" name="bcNum" maxlength="12"><br>
-        <div id="bcNumError" class="errorMessage"></div><br>
-        <label for="txtAmount">Amount (up to 4 numeric characters):</label><br>
-        <input type="text" id="txtAmount" name="txtAmount" maxlength="4"><br>
-        <div id="txtAmountError" class="errorMessage"></div><br>
+        <div class="control-group">
+            <h3>App Links Print Label Example</h3>
+            <h5>Please input 'Product Number' and 'Amount' :</h5>
+            <label for="bcNum">Product Number (up to 12 alphanumeric characters)</label><br>
+            <input type="text" id="bcNum" name="bcNum" maxlength="12"><br>
+            <div id="bcNumError" class="errorMessage"></div><br>
+            <label for="txtAmount">Amount (up to 4 numeric characters):</label><br>
+            <input type="text" id="txtAmount" name="txtAmount" maxlength="4"><br>
+            <div id="txtAmountError" class="errorMessage"></div><br>
 
-        <input type="checkbox" id="debugCheckbox">
-        <label for="debugCheckbox">Debug Mode</label><br>
-        <p></p>
-        <input type="button" value=" Print " onclick=printLabel()>
-        <p></p>
+            <input type="button" value=" Print " onclick=printLabel()><br><br>
+            <span style="color: blue;font-size: 12px">Tip: Only works on mobile devices with 'iLabelPrint+' App installed!</span>
+        </div>
 
+        <div class="control-group">
+            <label for="applinks">
+                <input type="radio" id="applinks" name="linkType" value="0" checked> AppLinks
+            </label>
+            <label for="deeplinks">
+                <input type="radio" id="deeplinks" name="linkType" value="1"> Deep Links
+            </label>
+            <p>
+                <label>
+                    <input type="checkbox" id="debugMode"> Debug Mode
+                </label>
+        </div>
     </form>
-    <div id="jsonOutput"></div>
-    <div id="linkOutput"></div>
+
 </div>
 
+
+<div id="jsonOutput"></div>
+<div id="linkOutput"></div>
 <script>
 document.getElementById("bcNum").addEventListener("input", function() {
   if (this.value.length > 12) {
@@ -108,7 +128,8 @@ function printLabel() {
 
   var bcNum = document.getElementById("bcNum").value.trim().toString();
   var txtAmount = document.getElementById("txtAmount").value.trim().toString();
-  var debugMode = document.getElementById("debugCheckbox").checked;
+  var debugMode = document.getElementById("debugMode").checked;
+  var linkTypeSelectedValue = document.querySelector('input[name="linkType"]:checked').value;
 
   var jsonData = {
     "labelSrc": "https://shinbin.github.io/labels/link_example.json",
@@ -126,7 +147,7 @@ function printLabel() {
 
   var jsonString = JSON.stringify(jsonData);
   var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
-  var url = "https://shinbin.github.io/ilabelprint/print?data=" + base64URL;
+  var url = (linkTypeSelectedValue === "0" ? "https://shinbin.github.io/ilabelprint/print" : "ilabel2://argox/print") + "?data=" + base64URL;
 
   if (debugMode) {
     url += "&debug=on";
