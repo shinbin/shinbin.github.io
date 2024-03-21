@@ -9,7 +9,7 @@
                   {
                     "/": "/ilabelprint/print",
                     "comment": "Matches any URL whose path starts with /ilabelprint/print"
-                  },
+                  }
           ]
        },
       {
@@ -19,7 +19,7 @@
                 {
                   "/": "/details*",
                   "comment": "Matches any URL whose path starts with /details"
-                },
+                }
           ]
        }
     ]
