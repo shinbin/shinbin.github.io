@@ -1,9 +1,13 @@
 {
   "applinks": {
       "apps": [],
-      "details": [{"appID": "H5P32ZLBZ3.com.argox.ilabelprint-plus",
+      "details": [
+         {
+          "appID": "H5P32ZLBZ3.com.argox.ilabelprint-plus",
           "paths": ["/ilabelprint/print"],
           "components": [{"/": "/ilabelprint/print",
           "comment": "Matches any URL whose path starts with /ilabelprint/print"}]
-          }]}
+         }
+      ]
+  }
 }
