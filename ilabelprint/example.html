@@ -147,7 +147,7 @@ function printLabel() {
 
   var jsonString = JSON.stringify(jsonData);
   var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
-  var url = (linkTypeSelectedValue === "0" ? "https://shinbin.github.io/ilabelprint/print" : "ilabel2://argox/print") + "?data=" + base64URL;
+  var url = (linkTypeSelectedValue === "0" ? "https://argox.com/ilabelprint/print" : "ilabel2://argox/print") + "?data=" + base64URL;
 
   if (debugMode) {
     url += "&debug=on";
