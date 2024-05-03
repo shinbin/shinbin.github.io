@@ -118,13 +118,13 @@ function validateInput() {
   var txtAmountPattern = /^[0-9]*$/;
 
   if (bcNum === "" || !bcNumPattern.test(bcNum)) {
-    bcNumError.textContent = "Invalid Value!";
+    bcNumError.textContent = "輸入內容不符合規定!";
     document.getElementById("bcNum").focus();
     return false;
   }
 
   if (txtAmount === "" || !txtAmountPattern.test(txtAmount)) {
-    txtAmountError.textContent = "Invalid Value!";
+    txtAmountError.textContent = "輸入內容不符合規定!";
     document.getElementById("txtAmount").focus();
     return false;
   }
