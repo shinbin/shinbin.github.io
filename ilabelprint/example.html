@@ -29,9 +29,16 @@
         margin:  auto;
         border: 1px solid gray;
         padding: 10px;
-        margin-top: 40px;
-        margin-bottom: 10px;
+        margin-top: 20px;
+        margin-bottom: 5px;
       }
+
+      .dashed-border {
+            border: 1px dashed #000;
+            padding: 5px;
+            margin-bottom: 10px;
+      }
+
     </style>
 </head>
 <body>
@@ -40,12 +47,12 @@
 <div class="container">
 
     <form id="inputForm" >
-        <div class="control-group">
+
             <h4>Printing Labels via App Links Example</h4>
             <span style="color: blue;font-size: 12px">Only works on mobile devices with 'iLabelPrint+' App installed!</span>
             <br>
-            <span style="color: red;font-size: 12px">This form is for demo only. You can enter any data for testing.</span>
-        </div>
+            <span style="color: red;font-size: 12px">The following form is for demo only. You can enter any data for testing.</span>
+
         <div class="control-group">
             <h3>Price Label</h3>
             <h5>Please input 'Product Number' and 'Amount' :</h5>
@@ -57,8 +64,9 @@
             <div id="txtAmountError" class="errorMessage"></div><br>
             <input type="button" value=" Print " onclick=printLabel()><br><br>
         </div>
-
-        <div class="control-group">
+        <p>
+        <div class="dashed-border">
+            <h6>Test Options</h6>
             <label for="applinks">
                 <input type="radio" id="applinks" name="linkType" value="0" checked> App Links
             </label>
@@ -66,10 +74,11 @@
                 <input type="radio" id="deeplinks" name="linkType" value="1"> Deep Links
             </label>
             <p>
-                <label>
-                    <input type="checkbox" id="debugMode"> Debug Mode
-                </label>
+            <label>
+                <input type="checkbox" id="debugMode"> Debug Mode
+            </label>
         </div>
+
     </form>
 
 </div>
