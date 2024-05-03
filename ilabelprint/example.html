@@ -52,6 +52,9 @@
 
             <input type="button" value=" Print " onclick=printLabel()><br><br>
             <span style="color: blue;font-size: 12px">Tip: Only works on mobile devices with 'iLabelPrint+' App installed!</span>
+            <br>
+            <span style="color: red;font-size: 12px">This form is for demo only. You can enter any data for testing.</span>
+
         </div>
 
         <div class="control-group">
@@ -132,7 +135,7 @@ function printLabel() {
   var linkTypeSelectedValue = document.querySelector('input[name="linkType"]:checked').value;
 
   var jsonData = {
-    "labelSrc": "https://shinbin.github.io/ilabelprint/link_example.json",
+    "labelSrc": "https://www.argox.com/ilabelprint/link_example.json",
     "cloudLabelVer": 1,
     "initSetting": {
       "copies": 1,
