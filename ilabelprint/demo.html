@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Label</title>
+    <style>
+      .container {
+          text-align: center;
+          margin: 0 auto;
+      }
+
+      form {
+          display: inline-block;
+          text-align: left;
+      }
+
+      .errorMessage {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      input[type="button"] {
+          font-size: 20px;
+      }
+      .control-group {
+        text-align: left;
+        margin:  auto;
+        border: 1px solid gray;
+        padding: 10px;
+        margin-top: 20px;
+        margin-bottom: 5px;
+      }
+
+      .dashed-border {
+            border: 1px dashed #000;
+            padding: 5px;
+            margin-bottom: 10px;
+      }
+
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+
+    <form id="inputForm" >
+        <h4>Printing Cloud Labels via App Links Example</h4>
+        <span style="color: red;font-size: 12px">Only works on mobile devices with 'iLabelPrint+' App installed!</span>
+        <br>
+        <span style="color: blue;font-size: 12px">The following form is for demo only, you can enter any data for testing.</span>
+
+        <div class="control-group">
+            <h3>Print price labels</h3>
+            <h5>Please input 'Product Number' and 'Amount' :</h5>
+            <label for="bcNum">Product Number (up to 12 alphanumeric characters)</label><br>
+            <input type="text" id="bcNum" name="bcNum" maxlength="12"><br>
+            <div id="bcNumError" class="errorMessage"></div><br>
+            <label for="txtAmount">Amount (up to 4 numeric characters):</label><br>
+            <input type="number" id="txtAmount" name="txtAmount" maxlength="4"><br>
+            <div id="txtAmountError" class="errorMessage"></div><br>
+            <input type="button" value=" Print " onclick=printLabel()><br><br>
+        </div>
+        <p>
+        <div class="dashed-border">
+            <h6>Test Options</h6>
+            <label for="applinks">
+                <input type="radio" id="applinks" name="linkType" value="0" checked> App Links
+            </label>
+            <label for="deeplinks">
+                <input type="radio" id="deeplinks" name="linkType" value="1"> Deep Links
+            </label>
+            <p>
+            <label>
+                <input type="checkbox" id="debugMode"> Debug Mode
+            </label>
+        </div>
+    </form>
+
+</div>
+
+
+<div id="jsonOutput"></div>
+<div id="linkOutput"></div>
+<script>
+document.getElementById("bcNum").addEventListener("input", function() {
+  if (this.value.length > 12) {
+    this.value = this.value.slice(0, 12);
+  }
+  document.getElementById("bcNumError").textContent = "";
+});
+
+document.getElementById("txtAmount").addEventListener("input", function() {
+  if (this.value.length > 4) {
+    this.value = this.value.slice(0, 4);
+  }
+  document.getElementById("txtAmountError").textContent = "";
+});
+
+function base64URLEncode(text) {
+    // Encode the text content to UTF-8
+    var utf8Bytes = new TextEncoder().encode(text);
+    // Use the built-in btoa() function for Base64 encoding
+    const base64String = btoa(String.fromCharCode(...utf8Bytes));
+    // Adjust the encoding result to meet the requirements of Base64 URL format
+    var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return base64Url;
+}
+
+function validateInput() {
+  var bcNum = document.getElementById("bcNum").value.trim();
+  var txtAmount = document.getElementById("txtAmount").value.trim();
+  var bcNumError = document.getElementById("bcNumError");
+  var txtAmountError = document.getElementById("txtAmountError");
+  var bcNumPattern = /^[0-9a-zA-Z]*$/;
+  var txtAmountPattern = /^[0-9]*$/;
+
+  if (bcNum === "" || !bcNumPattern.test(bcNum)) {
+    bcNumError.textContent = "Invalid Value!";
+    document.getElementById("bcNum").focus();
+    return false;
+  }
+
+  if (txtAmount === "" || !txtAmountPattern.test(txtAmount)) {
+    txtAmountError.textContent = "Invalid Value!";
+    document.getElementById("txtAmount").focus();
+    return false;
+  }
+
+  return true;
+}
+
+function printLabel() {
+  if (!validateInput()) {
+    return;
+  }
+
+  var bcNum = document.getElementById("bcNum").value.trim().toString();
+  var txtAmount = document.getElementById("txtAmount").value.trim().toString();
+  var debugMode = document.getElementById("debugMode").checked;
+  var linkTypeSelectedValue = document.querySelector('input[name="linkType"]:checked').value;
+
+  var jsonData = {
+    "labelSrc": "https://www.argox.com/docfile/iLabelPrint/link_example.json",
+    "cloudLabelVer": 1,
+    "initSetting": {
+      "copies": 1,
+      "darkness": 8
+    },
+    "printInput": {
+      "bcNum": bcNum,
+      "txtAmount": txtAmount
+    },
+    "modifyInput": false
+  };
+
+  var jsonString = JSON.stringify(jsonData);
+  var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
+  var url = (linkTypeSelectedValue === "0" ? "https://api.argox.com/ilabel/print" : "ilabel2c://argox/print") + "?data=" + base64URL;
+
+  if (debugMode) {
+    url += "&debug=on";
+  }
+
+<!--  document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>";-->
+<!--  document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";-->
+  window.open(url);
+}
+</script>
+
+</body>
+</html>

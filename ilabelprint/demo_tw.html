@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Label</title>
+    <style>
+      .container {
+          text-align: center;
+          margin: 0 auto;
+      }
+
+      form {
+          display: inline-block;
+          text-align: left;
+      }
+
+      .errorMessage {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      input[type="button"] {
+          font-size: 20px;
+      }
+      .control-group {
+        text-align: left;
+        margin:  auto;
+        border: 1px solid gray;
+        padding: 10px;
+        margin-top: 20px;
+        margin-bottom: 5px;
+      }
+
+      .dashed-border {
+            border: 1px dashed #000;
+            padding: 5px;
+            margin-bottom: 10px;
+      }
+
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+
+    <form id="inputForm" >
+        <h4>透過應用連結列印雲端標籤範例</h4>
+        <span style="color: red;font-size: 12px">僅適用於安裝了“iLabelPrint+”應用程式的行動裝置！</span>
+        <br>
+        <span style="color: blue;font-size: 12px">以下表單僅供示範，您可以輸入任何資料進行測試。</span>
+
+        <div class="control-group">
+            <h3>列印價格標籤</h3>
+            <h5>請輸入「產品編號」和「金額」：</h5>
+            <label for="bcNum">產品編號 (最多 12 個英數字元)</label><br>
+            <input type="text" id="bcNum" name="bcNum" maxlength="12"><br>
+            <div id="bcNumError" class="errorMessage"></div><br>
+            <label for="txtAmount">金額 (最多 4 個數字字元):</label><br>
+            <input type="number" id="txtAmount" name="txtAmount" maxlength="4"><br>
+            <div id="txtAmountError" class="errorMessage"></div><br>
+            <input type="button" value=" 列印 " onclick=printLabel()><br><br>
+        </div>
+        <p>
+        <div class="dashed-border">
+            <h6>測試選項</h6>
+            <label for="applinks">
+                <input type="radio" id="applinks" name="linkType" value="0" checked> App Links
+            </label>
+            <label for="deeplinks">
+                <input type="radio" id="deeplinks" name="linkType" value="1"> Deep Links
+            </label>
+            <p>
+                <label>
+                    <input type="checkbox" id="debugMode"> 偵錯模式
+                </label>
+        </div>
+    </form>
+
+</div>
+
+
+<div id="jsonOutput"></div>
+<div id="linkOutput"></div>
+<script>
+document.getElementById("bcNum").addEventListener("input", function() {
+  if (this.value.length > 12) {
+    this.value = this.value.slice(0, 12);
+  }
+  document.getElementById("bcNumError").textContent = "";
+});
+
+document.getElementById("txtAmount").addEventListener("input", function() {
+  if (this.value.length > 4) {
+    this.value = this.value.slice(0, 4);
+  }
+  document.getElementById("txtAmountError").textContent = "";
+});
+
+function base64URLEncode(text) {
+    // Encode the text content to UTF-8
+    var utf8Bytes = new TextEncoder().encode(text);
+    // Use the built-in btoa() function for Base64 encoding
+    const base64String = btoa(String.fromCharCode(...utf8Bytes));
+    // Adjust the encoding result to meet the requirements of Base64 URL format
+    var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return base64Url;
+}
+
+function validateInput() {
+  var bcNum = document.getElementById("bcNum").value.trim();
+  var txtAmount = document.getElementById("txtAmount").value.trim();
+  var bcNumError = document.getElementById("bcNumError");
+  var txtAmountError = document.getElementById("txtAmountError");
+  var bcNumPattern = /^[0-9a-zA-Z]*$/;
+  var txtAmountPattern = /^[0-9]*$/;
+
+  if (bcNum === "" || !bcNumPattern.test(bcNum)) {
+    bcNumError.textContent = "輸入內容不符合規定!";
+    document.getElementById("bcNum").focus();
+    return false;
+  }
+
+  if (txtAmount === "" || !txtAmountPattern.test(txtAmount)) {
+    txtAmountError.textContent = "輸入內容不符合規定!";
+    document.getElementById("txtAmount").focus();
+    return false;
+  }
+
+  return true;
+}
+
+function printLabel() {
+  if (!validateInput()) {
+    return;
+  }
+
+  var bcNum = document.getElementById("bcNum").value.trim().toString();
+  var txtAmount = document.getElementById("txtAmount").value.trim().toString();
+  var debugMode = document.getElementById("debugMode").checked;
+  var linkTypeSelectedValue = document.querySelector('input[name="linkType"]:checked').value;
+  <!-- test shinbin.github.io ,link_example v2-->
+  var jsonData = {
+    "labelSrc": "https://shinbin.github.io/ilabelprint/link_example.json",
+    "cloudLabelVer": 2,
+    "initSetting": {
+      "copies": 1,
+      "darkness": 8
+    },
+    "printInput": {
+      "bcNum": bcNum,
+      "txtAmount": txtAmount
+    },
+    "modifyInput": false
+  };
+
+  var jsonString = JSON.stringify(jsonData);
+  var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
+  var url = (linkTypeSelectedValue === "0" ? "https://api.argox.com/ilabel/print" : "ilabel2c://argox/print") + "?data=" + base64URL;
+
+  if (debugMode) {
+    url += "&debug=on";
+  }
+
+<!--  document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>";-->
+<!--  document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";-->
+  window.open(url);
+}
+</script>
+
+</body>
+</html>
