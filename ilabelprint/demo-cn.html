@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,25 +47,25 @@
 <div class="container">
 
     <form id="inputForm" >
-        <h4>透過應用連結列印雲端標籤範例</h4>
-        <span style="color: red;font-size: 12px">僅適用於安裝了“iLabelPrint+”應用程式的行動裝置！</span>
+        <h4>通过应用链接打印云标签示例</h4>
+        <span style="color: red;font-size: 12px">仅适用于安装了“iLabelPrint+”应用程序的移动设备！</span>
         <br>
-        <span style="color: blue;font-size: 12px">以下表單僅供示範，您可以輸入任何資料進行測試。</span>
+        <span style="color: blue;font-size: 12px">以下表单仅供示范，您可以输入任何数据进行测试。</span>
 
         <div class="control-group">
-            <h3>列印價格標籤</h3>
-            <h5>請輸入「產品編號」和「金額」：</h5>
-            <label for="bcNum">產品編號 (最多 12 個英數字元)</label><br>
+            <h3>打印价格标签</h3>
+            <h5>请输入 “产品编号” 和 “金额”：</h5>
+            <label for="bcNum">产品编号 (最多 12 个英数字符)</label><br>
             <input type="text" id="bcNum" name="bcNum" maxlength="12"><br>
             <div id="bcNumError" class="errorMessage"></div><br>
-            <label for="txtAmount">金額 (最多 4 個數字字元):</label><br>
+            <label for="txtAmount">金额 (最多 4 個数字字符):</label><br>
             <input type="number" id="txtAmount" name="txtAmount" maxlength="4"><br>
             <div id="txtAmountError" class="errorMessage"></div><br>
-            <input type="button" value=" 列印 " onclick=printLabel()><br><br>
+            <input type="button" value=" 打印 " onclick=printLabel()><br><br>
         </div>
         <p>
         <div class="dashed-border">
-            <h6>測試選項</h6>
+            <h6>测试选项</h6>
             <label for="applinks">
                 <input type="radio" id="applinks" name="linkType" value="0" checked> App Links
             </label>
@@ -74,7 +74,7 @@
             </label>
             <p>
                 <label>
-                    <input type="checkbox" id="debugMode"> 偵錯模式
+                    <input type="checkbox" id="debugMode"> 调试模式
                 </label>
         </div>
     </form>
@@ -118,13 +118,13 @@ function validateInput() {
   var txtAmountPattern = /^[0-9]*$/;
 
   if (bcNum === "" || !bcNumPattern.test(bcNum)) {
-    bcNumError.textContent = "輸入內容不符合規定!";
+    bcNumError.textContent = "输入内容不符规定!";
     document.getElementById("bcNum").focus();
     return false;
   }
 
   if (txtAmount === "" || !txtAmountPattern.test(txtAmount)) {
-    txtAmountError.textContent = "輸入內容不符合規定!";
+    txtAmountError.textContent = "输入内容不符规定!";
     document.getElementById("txtAmount").focus();
     return false;
   }
@@ -141,10 +141,10 @@ function printLabel() {
   var txtAmount = document.getElementById("txtAmount").value.trim().toString();
   var debugMode = document.getElementById("debugMode").checked;
   var linkTypeSelectedValue = document.querySelector('input[name="linkType"]:checked').value;
-  <!-- test shinbin.github.io ,link_example v2-->
+
   var jsonData = {
-    "labelSrc": "https://shinbin.github.io/ilabelprint/link_example.json",
-    "cloudLabelVer": 2,
+    "labelSrc": "https://www.argox.com/docfile/iLabelPrint/link_example.json",
+    "cloudLabelVer": 1,
     "initSetting": {
       "copies": 1,
       "darkness": 8
@@ -158,7 +158,7 @@ function printLabel() {
 
   var jsonString = JSON.stringify(jsonData);
   var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
-  var url = (linkTypeSelectedValue === "0" ? "https://api.argox.com/ilabelprint/print" : "ilabel2://argox/print") + "?data=" + base64URL;
+  var url = (linkTypeSelectedValue === "0" ? "https://api.argox.com/ilabelprint/link" : "ilabel2c://argox/print") + "?data=" + base64URL;
 
   if (debugMode) {
     url += "&debug=on";
