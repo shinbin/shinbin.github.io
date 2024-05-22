@@ -65,17 +65,9 @@
         </div>
         <p>
         <div class="dashed-border">
-            <h6>测试选项</h6>
-            <label for="applinks">
-                <input type="radio" id="applinks" name="linkType" value="0" checked> App Links
+            <label>
+                <input type="checkbox" id="debugMode"> 调试模式
             </label>
-            <label for="deeplinks">
-                <input type="radio" id="deeplinks" name="linkType" value="1"> Deep Links
-            </label>
-            <p>
-                <label>
-                    <input type="checkbox" id="debugMode"> 调试模式
-                </label>
         </div>
     </form>
 
@@ -140,7 +132,6 @@ function printLabel() {
   var bcNum = document.getElementById("bcNum").value.trim().toString();
   var txtAmount = document.getElementById("txtAmount").value.trim().toString();
   var debugMode = document.getElementById("debugMode").checked;
-  var linkTypeSelectedValue = document.querySelector('input[name="linkType"]:checked').value;
 
   var jsonData = {
     "labelSrc": "https://www.argox.com/docfile/iLabelPrint/link_example.json",
@@ -158,7 +149,7 @@ function printLabel() {
 
   var jsonString = JSON.stringify(jsonData);
   var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
-  var url = (linkTypeSelectedValue === "0" ? "https://api.argox.com/ilabelprint/link" : "ilabel2c://argox/print") + "?data=" + base64URL;
+  var url = "ilabel2c://argox/print?data=" + base64URL;
 
   if (debugMode) {
     url += "&debug=on";
