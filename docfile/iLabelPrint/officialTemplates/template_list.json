@@ -1,9 +1,11 @@
 {
   "id": 1,
   "android":
-  [
+  [ "https://shinbin.github.io/docfile/iLabelPrint/officialTemplates/android/android_template.json",
+    "https://shinbin.github.io/docfile/iLabelPrint/officialTemplates/common/common_template.json"
   ],
   "ios":
-  [
+  [ "https://shinbin.github.io/docfile/iLabelPrint/officialTemplates/ios/ios_template.json",
+    "https://shinbin.github.io/docfile/iLabelPrint/officialTemplates/common/common_template.json"
   ]
 }
