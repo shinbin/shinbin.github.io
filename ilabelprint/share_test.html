@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 檔案分享</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .share-btn {
+            display: block;
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 15px;
+            font-size: 16px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+        .share-btn:hover {
+            background-color: #2980b9;
+        }
+        .direct-link {
+            display: block;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            color: #2c3e50;
+        }
+        .direct-link:hover {
+            background-color: #d5dbdb;
+        }
+        .instructions {
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .error-message {
+            color: #e74c3c;
+            display: none;
+            text-align: center;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>JSON 檔案分享</h1>
+
+    <div class="instructions">
+        <p>您可以使用以下方式將 JSON 檔案分享至您的應用程式：</p>
+        <ol>
+            <li>點擊「分享 JSON 檔案」按鈕使用系統分享功能</li>
+            <li>或使用下方的直接連結進行下載</li>
+        </ol>
+    </div>
+
+    <button id="shareButton" class="share-btn">分享 JSON 檔案</button>
+    <div id="errorMessage" class="error-message">您的瀏覽器不支援分享功能，請使用下方的直接連結。</div>
+
+    <a href="product.json" id="directLink" class="direct-link" download>直接下載 JSON 檔案</a>
+
+    <div class="instructions">
+        <p><strong>提示：</strong> 如果您在 iOS 裝置上，可能需要長按直接連結，然後選擇「分享」選項。</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const shareButton = document.getElementById('shareButton');
+        const directLink = document.getElementById('directLink');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // 檢查目前的檔案路徑，並建立 JSON 檔案連結
+        const currentPath = window.location.pathname;
+        const jsonFileName = 'product.json'; // 預設的 JSON 檔案名稱
+        const jsonFilePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + jsonFileName;
+
+        // 更新直接連結的 href 屬性
+        directLink.href = jsonFileName;
+        directLink.textContent = `直接下載 ${jsonFileName}`;
+
+        // 分享按鈕的點擊事件
+        shareButton.addEventListener('click', function() {
+            // 檢查瀏覽器是否支援 Web Share API
+            if (navigator.share) {
+                // 建立分享內容
+                navigator.share({
+                    title: 'JSON 檔案分享',
+                    text: '這是我分享的 JSON 檔案',
+                    url: jsonFileName
+                })
+                .then(() => console.log('分享成功'))
+                .catch((error) => {
+                    console.error('分享失敗:', error);
+                    errorMessage.style.display = 'block';
+                });
+            } else {
+                // 如果瀏覽器不支援 Web Share API，顯示錯誤訊息
+                errorMessage.style.display = 'block';
+                console.log('瀏覽器不支援分享功能');
+            }
+        });
+
+        // 檢查是否為 iOS 設備
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+        // 對於 iOS 設備，提供特殊處理
+        if (isIOS) {
+            // 添加 iOS 特有的提示
+            const iosInstruction = document.createElement('div');
+            iosInstruction.className = 'instructions';
+            iosInstruction.innerHTML = '<p><strong>iOS 用戶注意：</strong> 如果分享按鈕不起作用，請長按上方的直接連結，然後從彈出菜單中選擇「分享」。</p>';
+            document.querySelector('.container').appendChild(iosInstruction);
+        }
+    });
+</script>
+</body>
+</html>
